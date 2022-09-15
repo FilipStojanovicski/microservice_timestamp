@@ -21,12 +21,19 @@ app.get("/", function (req, res) {
 });
 
 // your first API endpoint... 
-app.get("/api/:timestamp", function (req, res) {
-  let timestamp = req.params.timestamp;
-  if (timestamp.match(/^\d+$/)){
-    timestamp = parseInt(timestamp);
+app.get("/api/:timestamp?", function (req, res) {
+  var timestamp = req.params.timestamp;
+
+  if (timestamp){
+    if (timestamp.match(/^\d+$/)){
+      timestamp = parseInt(timestamp);
+    }
+    var date = new Date(timestamp);
   }
-  var date = new Date(timestamp);
+  else {
+    var date = new Date();
+  }
+
   let date_unix = Math.floor(date.getTime());
   let date_utc = date.toUTCString();
   res.json({unix: date_unix, utc: date_utc});
